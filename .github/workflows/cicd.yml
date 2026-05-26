@@ -27,10 +27,11 @@ jobs:
       - uses: actions/checkout@v4
       - name: Trivy Installation
         run: |
-          sudo apt-get install wget gnupg
+          sudo apt-get update
+          sudo apt-get install wget gnupg lsb-release -y
           wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | gpg --dearmor | sudo tee /usr/share/keyrings/trivy.gpg > /dev/null
           echo "deb [signed-by=/usr/share/keyrings/trivy.gpg] https://aquasecurity.github.io/trivy-repo/deb generic main" | sudo tee -a /etc/apt/sources.list.d/trivy.list
-          sudo apt-get update -y
+          sudo apt-get update
           sudo apt-get install trivy -y
       - name: Trivy FS Scan  
         run: trivy fs --formate table -o fs-report.json .
